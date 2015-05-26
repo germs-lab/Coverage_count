@@ -35,7 +35,10 @@ python sam-to-coverage.py A1_CGATGT_L007_R1_001.sam.sorted.bam RefSoil.fa > A1_C
 ## 3. Merge result
 
 mkdir coverageResult
+
 mv *.coverage.txt coverageResult
+
 g++ MergeResult.cpp -o MergeResult
+
 ./MergeResult coverageResult coverageResult.txt
 
