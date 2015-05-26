@@ -1,6 +1,6 @@
 //This script merge result file
 // usage:  g++ MergeResult.cpp -o MergeResult
-// ./MergeResult inputDIR resultfilename
+// ./MergeResult coverageResult coverageResult.txt
 #include <stdio.h>
 #include <iostream>
 #include <string>
@@ -8,7 +8,7 @@
 #include <dirent.h>
 #include <vector>
 #include <sstream>
-
+#include <stdlib.h>
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -17,10 +17,8 @@ int OpenFile(FILE **filePoint, string fileInput);
 void CloseFile(FILE **filePoint);
 int checkFile(ifstream &input); 
 void printMatrix(vector <vector <string> > &dad);
+int fileToData (string filenameDIR,vector <vector <string> > &data);
 
-//file for input
-ifstream input;
-string s;
 
 //get list of file
 DIR *dir;
@@ -38,30 +36,9 @@ if ((dir = opendir (ca)) != NULL) {
  		token = ent->d_name;
  		if(token.substr(0,1)==".")continue;
  		filename.push_back(token);
-	
-		char const* fin = filenameDIR.c_str();
- 		input.open(fin);
-		checkFile(input);
 		vector <vector <string> > data;
-		while(getline(input,s))
-		{
-
-			istringstream ss (s);
-			//this add data into the column (second number)
-			vector <string> record;
-			while (ss)
-			{
-				string s1;
-				if(!getline(ss,s1,' ')) break;
-				if(s1!=""){
-				record.push_back(s1);
-				}
-			}
-			//this add data into the row (first number)
-			data.push_back(record);
-
-		}//while
-		input.close();
+		
+		fileToData(filenameDIR,data);
 		
 		//make data2 matrix
 		if(flag==0){
@@ -95,16 +72,17 @@ ofstream myfile;
 myfile.open (argv[2]);
 myfile << "genome ";
 for (int i=0; i<filename.size();i++){
-	istringstream ss (filename[i]);	
-		vector <string> record;
-		while (ss)
-		{
-			string s1;
-			if(!getline(ss,s1,'_')) break;
-			if(s1!=""){
-				record.push_back(s1);
-			}
+		
+	vector <string> record;
+	istringstream ss (filename[i]);
+	while (ss)
+	{
+		string s1;
+		if(!getline(ss,s1,'_')) break;
+		if(s1!=""){
+			record.push_back(s1);
 		}
+	}
 	myfile <<  record[0]+" ";
 }
 myfile << "\n";
@@ -159,4 +137,31 @@ void printMatrix(vector <vector <string> > &dad){
 		}
 	cout<<endl<<flush;
 	}
+}
+
+//file contents to data-vector
+int fileToData (string filenameDIR,vector <vector <string> > &data){
+	char const* fin = filenameDIR.c_str();
+	ifstream input;
+	string s;
+	input.open(fin);
+	checkFile(input);
+	while(getline(input,s))
+	{
+		istringstream ss (s);
+		//this add data into the column (second number)
+		vector <string> record;
+		while (ss)
+		{
+			string s1;
+			if(!getline(ss,s1,' ')) break;
+			if(s1!=""){
+				record.push_back(s1);
+			}
+		}
+		//this add data into the row (first number)
+		data.push_back(record);
+	}//while
+	input.close();
+	return 0;
 }
