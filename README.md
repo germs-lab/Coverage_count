@@ -47,10 +47,10 @@ g++ MergeResult.cpp -o MergeResult
 ## 4. If you use idxstats;
 
 If you want to count by using idstats, following.
-
+Note: this command only run under Unix/Linux/OS-X terminal
 ```
-samtools idxstats *.sorted.bam
+for x in *.sorted.bam; samtools idxstats $x > $x.counts.txt;done
 mkdir counts 
-mv *.sorted.bam counts
+mv *.counts.txt counts
 bash idxstatsToOnefile.sh counts
 ```
