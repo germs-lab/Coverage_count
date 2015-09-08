@@ -42,3 +42,13 @@ g++ MergeResult.cpp -o MergeResult
 
 ./MergeResult coverageResult coverageResult.txt
 
+## 4. If you use idstats;
+
+If you want to count by using idstats, following.
+
+```
+samtools idxstats *.sorted.bam
+mkdir counts 
+mv *.sorted.bam counts
+bash idxstatsToOnefile.sh counts
+```
