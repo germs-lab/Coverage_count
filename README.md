@@ -44,7 +44,7 @@ mv *.coverage.txt coverageResult
 g++ MergeResult.cpp -o MergeResult
 ./MergeResult coverageResult coverageResult.txt
 ```
-## 4. If you use idstats;
+## 4. If you use idxstats;
 
 If you want to count by using idstats, following.
 
